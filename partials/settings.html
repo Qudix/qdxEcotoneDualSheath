@@ -5,24 +5,8 @@
 </section>
 
 <section>
-    <select ng-model="settings.qdxEcotoneDualSheath.leftBipedSlot">
-        <option value="1073741824" selected="selected">60</option>
-        <option value="536870912">59</option>
-        <option value="268435456">58</option>
-        <option value="134217728">57</option>
-        <option value="67108864">56</option>
-        <option value="33554432">55</option>
-        <option value="16777216">54</option>
-        <option value="8388608">53</option>
-        <option value="4194304">52</option>
-        <option value="524288">49</option>
-        <option value="262144">48</option>
-        <option value="131072">47</option>
-        <option value="65536">46</option>
-        <option value="32768">45</option>
-        <option value="16384">44</option>
-    </select>
-    Left - Biped Slot
+    <label for="leftBiped">Left Biped Slot</label>
+    <select id="leftBiped" ng-model="settings.qdxEcotoneDualSheath.leftBipedSlot" ng-options="+(item.id) as item.text for item in bipeds"></select>
 </section>
 
 <section>
@@ -30,22 +14,6 @@
 </section>
 
 <section>
-    <select ng-model="settings.qdxEcotoneDualSheath.rightBipedSlot">
-        <option value="1073741824">60</option>
-        <option value="536870912">59</option>
-        <option value="268435456">58</option>
-        <option value="134217728">57</option>
-        <option value="67108864">56</option>
-        <option value="33554432">55</option>
-        <option value="16777216">54</option>
-        <option value="8388608">53</option>
-        <option value="4194304">52</option>
-        <option value="524288">49</option>
-        <option value="262144">48</option>
-        <option value="131072">47</option>
-        <option value="65536">46</option>
-        <option value="32768">45</option>
-        <option value="16384" selected="selected">44</option>
-    </select>
-    Right - Biped Slot
+    <label for="rightBiped">Right Biped Slot</label>
+    <select id="rightBiped" ng-model="settings.qdxEcotoneDualSheath.rightBipedSlot" ng-options="+(item.id) as item.text for item in bipeds"></select>
 </section>
