@@ -20,6 +20,10 @@ const bipedList = {
 
 const biped_39 = 512
 
+function FileExists(path) {
+    return fh.jetpack.exists(path) === 'file';
+}
+
 function GetRecord(handle, path) {
     const fileName = xelib.GetFileName(handle);
     return xelib.GetElement(0, `${fileName}\\${path}`);
@@ -37,10 +41,6 @@ function GetShortHex(record) {
 
 function AppendData(name, hex) {
     return `__formData|${name}|0x${hex}`;
-}
-
-function FileExists(path) {
-    return fh.jetpack.exists(path) === 'file';
 }
 
 function AddData(locals, record) {

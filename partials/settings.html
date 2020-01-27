@@ -6,7 +6,7 @@
 
 <section>
     <label for="leftBiped">Left Biped Slot</label>
-    <select id="leftBiped" ng-model="settings.qdxEcotoneDualSheath.leftBipedSlot" ng-options="+(item.id) as item.text for item in bipeds"></select>
+    <select id="leftBiped" ng-model="settings.qdxEcotoneDualSheath.leftBipedSlot" ng-options="item.id as item.text for item in bipeds"></select>
 </section>
 
 <section>
@@ -15,5 +15,5 @@
 
 <section>
     <label for="rightBiped">Right Biped Slot</label>
-    <select id="rightBiped" ng-model="settings.qdxEcotoneDualSheath.rightBipedSlot" ng-options="+(item.id) as item.text for item in bipeds"></select>
+    <select id="rightBiped" ng-model="settings.qdxEcotoneDualSheath.rightBipedSlot" ng-options="item.id as item.text for item in bipeds"></select>
 </section>
