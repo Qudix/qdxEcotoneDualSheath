@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "released": "1/25/2020",
   "updated": "1/25/2020",
-  "description": "A port of the Ecotone Dual Sheath's xEdit patcher to UPF.",
+  "description": "A patcher that makes it so sheathed left-hand weapons and shields are visible. A port of Ecotone Dual Sheath's xEdit patcher to UPF",
   "requires": ["unifiedPatchingFramework"],
   "moduleLoader": "UPF",
   "canHotLoad": true
