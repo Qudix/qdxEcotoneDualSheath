@@ -29,12 +29,6 @@ function GetRecord(handle, path) {
     return xelib.GetElement(0, `${fileName}\\${path}`);
 }
 
-function NewRecord(handle, path, name) {
-    const record = xelib.AddElement(handle, `${path}\\${path}`);
-    xelib.AddElementValue(record, 'EDID', name);
-    return record;
-}
-
 function GetShortHex(record) {
     return xelib.GetHexFormID(record).slice(2).replace(/^0+/, '');
 }
@@ -72,27 +66,27 @@ function AddWeapon(helpers, settings, locals, record) {
 
     if (fileWeapon) {
         const leftWeaponAA = helpers.copyToPatch(locals.templateARMA, true);
-        xelib.SetValue(leftWeaponAA, 'EDID', idPrefix + id + 'AALeft');
-        xelib.AddElementValue(leftWeaponAA, 'Male world model\\MOD2', modelWeapon);    
+        helpers.cacheRecord(leftWeaponAA, idPrefix + id + 'AALeft');
+        xelib.AddElementValue(leftWeaponAA, 'Male world model\\MOD2', modelWeapon);
         xelib.SetUIntValue(leftWeaponAA, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
 
         const leftWeapon = helpers.copyToPatch(locals.templateARMO, true);
-        xelib.SetValue(leftWeapon, 'EDID', idPrefix + id + 'Left');
-        xelib.AddElementValue(leftWeapon, 'Armature\\[0]', xelib.LongName(leftWeaponAA));    
+        helpers.cacheRecord(leftWeapon, idPrefix + id + 'Left');
+        xelib.AddElementValue(leftWeapon, 'Armature\\[0]', xelib.LongName(leftWeaponAA));
         xelib.SetUIntValue(leftWeapon, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
-        xelib.AddKeyword(leftWeapon, locals.keywordLeftWeapon);   
+        xelib.AddKeyword(leftWeapon, locals.keywordLeftWeapon);
 
         locals.jsonData['FormsMap'][data]['LeftWeaponFormID'] = AppendData(settings.patchFileName, GetShortHex(leftWeapon));
     }
 
     if (fileSheath) {
         const leftSheathAA = helpers.copyToPatch(locals.templateARMA, true);
-        xelib.SetValue(leftSheathAA, 'EDID', idPrefix + id + 'AASheath');
+        helpers.cacheRecord(leftSheathAA, idPrefix + id + 'AASheath');
         xelib.AddElementValue(leftSheathAA, 'Male world model\\MOD2', modelSheath);
         xelib.SetUIntValue(leftSheathAA, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
 
         const leftSheath = helpers.copyToPatch(locals.templateARMO, true);
-        xelib.SetValue(leftSheath, 'EDID', idPrefix + id + 'Sheath');
+        helpers.cacheRecord(leftSheath, idPrefix + id + 'Sheath');
         xelib.AddElementValue(leftSheath, 'Armature\\[0]', xelib.LongName(leftSheathAA));  
         xelib.SetUIntValue(leftSheath, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
         xelib.AddKeyword(leftSheath, locals.keywordLeftSheath);  
@@ -119,12 +113,12 @@ function AddStaff(helpers, settings, locals, record) {
 
     if (fileLeft) {
         const leftStaffAA = helpers.copyToPatch(locals.templateARMA, true);
-        xelib.SetValue(leftStaffAA, 'EDID', idPrefix + id + 'AALeft');
+        helpers.cacheRecord(leftStaffAA, idPrefix + id + 'AALeft');
         xelib.AddElementValue(leftStaffAA, 'Male world model\\MOD2', modelLeft);    
         xelib.SetUIntValue(leftStaffAA, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
 
         const leftStaff = helpers.copyToPatch(locals.templateARMO, true);
-        xelib.SetValue(leftStaff, 'EDID', idPrefix + id + 'Left');
+        helpers.cacheRecord(leftStaff, idPrefix + id + 'Left');
         xelib.AddElementValue(leftStaff, 'Armature\\[0]', xelib.LongName(leftStaffAA));    
         xelib.SetUIntValue(leftStaff, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
         xelib.AddKeyword(leftStaff, locals.keywordLeftStaff);
@@ -134,12 +128,12 @@ function AddStaff(helpers, settings, locals, record) {
 
     if (fileRight) {
         const rightStaffAA = helpers.copyToPatch(locals.templateARMA, true);
-        xelib.SetValue(rightStaffAA, 'EDID', idPrefix + id + 'AARight');
+        helpers.cacheRecord(rightStaffAA, idPrefix + id + 'AARight');
         xelib.AddElementValue(rightStaffAA, 'Male world model\\MOD2', modelRight);    
         xelib.SetUIntValue(rightStaffAA, 'BOD2\\First Person Flags', settings.rightBipedSlot, true); 
 
         const rightStaff = helpers.copyToPatch(locals.templateARMO, true);
-        xelib.SetValue(rightStaff, 'EDID', idPrefix + id + 'Right');
+        helpers.cacheRecord(rightStaff, idPrefix + id + 'Right');
         xelib.AddElementValue(rightStaff, 'Armature\\[0]', xelib.LongName(rightStaffAA));    
         xelib.SetUIntValue(rightStaff, 'BOD2\\First Person Flags', settings.rightBipedSlot, true);
         xelib.AddKeyword(rightStaff, locals.keywordRightStaff);
@@ -166,19 +160,19 @@ function AddShield(helpers, settings, locals, record) {
 
     if (fileOnBack) {
         const shieldOnBackAA = helpers.copyToPatch(locals.templateARMA, true);
-        xelib.SetValue(shieldOnBackAA, 'EDID', idPrefix + id + 'AAOnBack');
+        helpers.cacheRecord(shieldOnBackAA, idPrefix + id + 'AAOnBack');
         xelib.AddElementValue(shieldOnBackAA, 'Male world model\\MOD2', modelOnBack);   
         xelib.SetUIntValue(shieldOnBackAA, 'BOD2\\First Person Flags', settings.leftBipedSlot + biped_39);
         xelib.SetFlag(shieldOnBackAA, 'BOD2\\First Person Flags', '39 - Shield', true);
 
         const shieldOnBack = helpers.copyToPatch(locals.templateARMO, true); 
-        xelib.SetValue(shieldOnBack, 'EDID', idPrefix + id + 'OnBack');
+        helpers.cacheRecord(shieldOnBack, idPrefix + id + 'OnBack');
         xelib.SetUIntValue(shieldOnBack, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
         xelib.AddElementValue(shieldOnBack, 'Armature\\[0]', xelib.LongName(shieldOnBackAA));   
         xelib.AddKeyword(shieldOnBack, locals.keywordShieldOnBack);
 
         const shieldOnBackNPC = helpers.copyToPatch(locals.templateARMO, true);
-        xelib.SetValue(shieldOnBackNPC, 'EDID', idPrefix + id + 'OnBackNPC');
+        helpers.cacheRecord(shieldOnBackNPC, idPrefix + id + 'OnBackNPC');
         xelib.SetUIntValue(shieldOnBackNPC, 'BOD2\\First Person Flags', settings.leftBipedSlot + biped_39);
         xelib.SetFlag(shieldOnBackNPC, 'BOD2\\First Person Flags', '39 - Shield', true);
         xelib.AddElementValue(shieldOnBackNPC, 'Armature\\[0]', xelib.LongName(shieldOnBackAA));   
@@ -190,20 +184,20 @@ function AddShield(helpers, settings, locals, record) {
 
     if (fileOnBackClk) {
         const shieldOnBackAAClk = helpers.copyToPatch(locals.templateARMA, true);
-        xelib.SetValue(shieldOnBackAAClk, 'EDID', idPrefix + id + 'AAOnBackClk');
+        helpers.cacheRecord(shieldOnBackAAClk, idPrefix + id + 'AAOnBackClk');
         xelib.AddElementValue(shieldOnBackAAClk, 'Male world model\\MOD2', modelOnBackClk); 
         xelib.SetUIntValue(shieldOnBackAAClk, 'BOD2\\First Person Flags', settings.leftBipedSlot + biped_39);
         xelib.SetFlag(shieldOnBackAAClk, 'BOD2\\First Person Flags', '39 - Shield', true);
 
         const shieldOnBackClk = helpers.copyToPatch(locals.templateARMO, true);   
-        xelib.SetValue(shieldOnBackClk, 'EDID', idPrefix + id + 'OnBackClk');
+        helpers.cacheRecord(shieldOnBackClk, idPrefix + id + 'OnBackClk');
         xelib.AddElementValue(shieldOnBackClk, 'Armature\\[0]', xelib.LongName(shieldOnBackAAClk)); 
         xelib.SetUIntValue(shieldOnBackClk, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
         xelib.AddKeyword(shieldOnBackClk, locals.keywordShieldOnBack);
         xelib.AddKeyword(shieldOnBackClk, locals.keywordShieldOnBackClk);
 
         const shieldOnBackClkNPC = helpers.copyToPatch(locals.templateARMO, true);
-        xelib.SetValue(shieldOnBackClkNPC, 'EDID', idPrefix + id + 'OnBackClkNPC');
+        helpers.cacheRecord(shieldOnBackClkNPC, idPrefix + id + 'OnBackClkNPC');
         xelib.SetUIntValue(shieldOnBackClkNPC, 'BOD2\\First Person Flags', settings.leftBipedSlot + biped_39);
         xelib.SetFlag(shieldOnBackClkNPC, 'BOD2\\First Person Flags', '39 - Shield', true);
         xelib.AddElementValue(shieldOnBackClkNPC, 'Armature\\[0]', xelib.LongName(shieldOnBackAAClk));   
@@ -323,7 +317,6 @@ registerPatcher({
             locals.jsonData['Setting']['TotalRecords'] = xelib.GetRecordCount(patchFile);
 
             fh.saveJsonFile(fh.path(locals.dataPath, 'Ecotone Dual Sheath Patch.json'), locals.jsonData);
-            
         },
         process: []
     })
