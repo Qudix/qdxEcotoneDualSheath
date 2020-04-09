@@ -33,15 +33,15 @@ function GetShortHex(record) {
     return xelib.GetHexFormID(record).slice(2).replace(/^0+/, '');
 }
 
-function AppendData(name, hex) {
-    return `__formData|${name}|0x${hex}`;
+function AppendData(name, record) {
+    return `__formData|${name}|0x${GetShortHex(record)}`;
 }
 
 function AddData(locals, record) {
     const master = xelib.GetMasterRecord(record);
     const masterName = xelib.GetFileName(xelib.GetElementFile(master));
 
-    const data = AppendData(masterName, GetShortHex(record));
+    const data = AppendData(masterName, record);
 
     locals.jsonData['FormsMap'][data] = {};
 
@@ -76,7 +76,7 @@ function AddWeapon(helpers, settings, locals, record) {
         xelib.SetUIntValue(leftWeapon, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
         xelib.AddKeyword(leftWeapon, locals.keywordLeftWeapon);
 
-        locals.jsonData['FormsMap'][data]['LeftWeaponFormID'] = AppendData(settings.patchFileName, GetShortHex(leftWeapon));
+        locals.jsonData['FormsMap'][data]['LeftWeaponFormID'] = AppendData(settings.patchFileName, leftWeapon);
     }
 
     if (fileSheath) {
@@ -91,7 +91,7 @@ function AddWeapon(helpers, settings, locals, record) {
         xelib.SetUIntValue(leftSheath, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
         xelib.AddKeyword(leftSheath, locals.keywordLeftSheath);  
 
-        locals.jsonData['FormsMap'][data]['LeftSheathFormID'] = AppendData(settings.patchFileName, GetShortHex(leftSheath));
+        locals.jsonData['FormsMap'][data]['LeftSheathFormID'] = AppendData(settings.patchFileName, leftSheath);
     }
 }
 
@@ -123,7 +123,7 @@ function AddStaff(helpers, settings, locals, record) {
         xelib.SetUIntValue(leftStaff, 'BOD2\\First Person Flags', settings.leftBipedSlot, true);
         xelib.AddKeyword(leftStaff, locals.keywordLeftStaff);
 
-        locals.jsonData['FormsMap'][data]['LeftStaffFormID'] = AppendData(settings.patchFileName, GetShortHex(leftStaff));
+        locals.jsonData['FormsMap'][data]['LeftStaffFormID'] = AppendData(settings.patchFileName, leftStaff);
     }
 
     if (fileRight) {
@@ -138,7 +138,7 @@ function AddStaff(helpers, settings, locals, record) {
         xelib.SetUIntValue(rightStaff, 'BOD2\\First Person Flags', settings.rightBipedSlot, true);
         xelib.AddKeyword(rightStaff, locals.keywordRightStaff);
 
-        locals.jsonData['FormsMap'][data]['RightStaffFormID'] = AppendData(settings.patchFileName, GetShortHex(rightStaff));
+        locals.jsonData['FormsMap'][data]['RightStaffFormID'] = AppendData(settings.patchFileName, rightStaff);
     }
 }
 
@@ -178,8 +178,8 @@ function AddShield(helpers, settings, locals, record) {
         xelib.AddElementValue(shieldOnBackNPC, 'Armature\\[0]', xelib.LongName(shieldOnBackAA));   
         xelib.AddKeyword(shieldOnBackNPC, locals.keywordShieldOnBack);
 
-        locals.jsonData['FormsMap'][data]['ShieldOnBackFormID'] = AppendData(settings.patchFileName, GetShortHex(shieldOnBack));
-        locals.jsonData['FormsMap'][data]['ShieldOnBackNPCFormID'] = AppendData(settings.patchFileName, GetShortHex(shieldOnBackNPC));
+        locals.jsonData['FormsMap'][data]['ShieldOnBackFormID'] = AppendData(settings.patchFileName, shieldOnBack);
+        locals.jsonData['FormsMap'][data]['ShieldOnBackNPCFormID'] = AppendData(settings.patchFileName, shieldOnBackNPC);
     }
 
     if (fileOnBackClk) {
@@ -204,8 +204,8 @@ function AddShield(helpers, settings, locals, record) {
         xelib.AddKeyword(shieldOnBackClkNPC, locals.keywordShieldOnBack);
         xelib.AddKeyword(shieldOnBackClkNPC, locals.keywordShieldOnBackClk);
 
-        locals.jsonData['FormsMap'][data]['ShieldOnBackClkFormID'] = AppendData(settings.patchFileName, GetShortHex(shieldOnBackClk));
-        locals.jsonData['FormsMap'][data]['ShieldOnBackClkNPCFormID'] = AppendData(settings.patchFileName, GetShortHex(shieldOnBackClkNPC));
+        locals.jsonData['FormsMap'][data]['ShieldOnBackClkFormID'] = AppendData(settings.patchFileName, shieldOnBackClk);
+        locals.jsonData['FormsMap'][data]['ShieldOnBackClkNPCFormID'] = AppendData(settings.patchFileName, shieldOnBackClkNPC);
     }
 }
 
@@ -239,9 +239,6 @@ registerPatcher({
         initialize: function() {
             const skyrim = xelib.FileByName('Skyrim.esm');
             const handle = xelib.FileByName('Ecotone Dual Sheath.esl');
-
-            const weapons = helpers.loadRecords('WEAP');
-            const armors = helpers.loadRecords('ARMO');
             
             locals = {
                 dataPath: xelib.GetGlobal('DataPath'),
@@ -270,6 +267,9 @@ registerPatcher({
                     }
                 }
             };
+
+            const weapons = helpers.loadRecords('WEAP');
+            const armors = helpers.loadRecords('ARMO');
 
             helpers.logMessage(`Ecotone Dual Sheath: Processing weapon records...`);
 
@@ -311,12 +311,12 @@ registerPatcher({
 
                 AddShield(helpers, settings, locals, record);
             });
-            
-            helpers.logMessage(`Ecotone Dual Sheath: Finished`);
 
             locals.jsonData['Setting']['TotalRecords'] = xelib.GetRecordCount(patchFile);
 
-            fh.saveJsonFile(fh.path(locals.dataPath, 'Ecotone Dual Sheath Patch.json'), locals.jsonData);
+            fh.saveJsonFile(fh.path(xelib.GetGlobal('DataPath'), 'Ecotone Dual Sheath Patch.json'), locals.jsonData);
+            
+            helpers.logMessage(`Ecotone Dual Sheath: Finished`);
         },
         process: []
     })
